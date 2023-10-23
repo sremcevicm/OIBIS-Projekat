@@ -1,0 +1,10 @@
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\bin\Debug\Client.exe.config
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\bin\Debug\Client.exe
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\bin\Debug\Client.pdb
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\bin\Debug\Common.dll
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\bin\Debug\Common.pdb
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\obj\Debug\Client.csproj.CopyComplete
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\obj\Debug\Client.exe
+C:\Users\andje\Desktop\OIBIS\OIBIS\Client\obj\Debug\Client.pdb

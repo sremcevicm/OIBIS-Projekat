@@ -1,0 +1,6 @@
+C:\Users\andje\Desktop\OIBIS\OIBIS\Common\bin\Debug\Common.dll
+C:\Users\andje\Desktop\OIBIS\OIBIS\Common\bin\Debug\Common.pdb
+C:\Users\andje\Desktop\OIBIS\OIBIS\Common\obj\Debug\Common.csproj.AssemblyReference.cache
+C:\Users\andje\Desktop\OIBIS\OIBIS\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\Users\andje\Desktop\OIBIS\OIBIS\Common\obj\Debug\Common.dll
+C:\Users\andje\Desktop\OIBIS\OIBIS\Common\obj\Debug\Common.pdb
