@@ -8,13 +8,3 @@ C:\Users\andje\Desktop\OIBIS\OIBIS\Client\obj\Debug\Client.csproj.CoreCompileInp
 C:\Users\andje\Desktop\OIBIS\OIBIS\Client\obj\Debug\Client.csproj.CopyComplete
 C:\Users\andje\Desktop\OIBIS\OIBIS\Client\obj\Debug\Client.exe
 C:\Users\andje\Desktop\OIBIS\OIBIS\Client\obj\Debug\Client.pdb
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\bin\Debug\Client.exe.config
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\bin\Debug\Client.exe
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\bin\Debug\Client.pdb
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\bin\Debug\Common.dll
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\bin\Debug\Common.pdb
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\obj\Debug\Client.csproj.AssemblyReference.cache
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\obj\Debug\Client.csproj.CopyComplete
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\obj\Debug\Client.exe
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Client\obj\Debug\Client.pdb

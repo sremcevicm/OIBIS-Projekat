@@ -4,9 +4,3 @@ C:\Users\andje\Desktop\OIBIS\OIBIS\Common\obj\Debug\Common.csproj.AssemblyRefere
 C:\Users\andje\Desktop\OIBIS\OIBIS\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
 C:\Users\andje\Desktop\OIBIS\OIBIS\Common\obj\Debug\Common.dll
 C:\Users\andje\Desktop\OIBIS\OIBIS\Common\obj\Debug\Common.pdb
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Common\bin\Debug\Common.dll
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Common\bin\Debug\Common.pdb
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Common\obj\Debug\Common.csproj.AssemblyReference.cache
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Common\obj\Debug\Common.dll
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Common\obj\Debug\Common.pdb
