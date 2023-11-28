@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,7 +47,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerTest.cs" />
+    <Compile Include="Servis.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -55,6 +56,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{d323ad45-e245-4b05-8deb-d9a54c805e37}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Manager\Manager.csproj">
+      <Project>{958B5C09-9855-4148-ADEB-3E98CBC91F34}</Project>
+      <Name>Manager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

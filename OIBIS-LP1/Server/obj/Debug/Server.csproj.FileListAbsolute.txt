@@ -18,3 +18,5 @@ C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Serve
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Server\obj\Debug\Server.csproj.CopyComplete
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Server\obj\Debug\Server.exe
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Server\obj\Debug\Server.pdb
+C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Server\bin\Debug\Manager.dll
+C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Server\bin\Debug\Manager.pdb

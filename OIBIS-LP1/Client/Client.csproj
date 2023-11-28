@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientProxy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,6 +56,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{D323AD45-E245-4B05-8DEB-D9A54C805E37}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Manager\Manager.csproj">
+      <Project>{958b5c09-9855-4148-adeb-3e98cbc91f34}</Project>
+      <Name>Manager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
