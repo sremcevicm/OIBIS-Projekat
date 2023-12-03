@@ -30,6 +30,24 @@ namespace Manager
             return null;
         }
 
+        public static string groupName(StoreName storeName, StoreLocation storeLocation, string subjectName)
+        {
+            X509Store store = new X509Store(storeName, storeLocation);
+            store.Open(OpenFlags.ReadOnly);
+
+            X509Certificate2Collection certCollection = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, true);
+            foreach (X509Certificate2 c in certCollection)
+            {
+                string[] temp = c.SubjectName.Name.Split(' ');
+                if (temp[1] != null)
+                {
+                    return temp[1];
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Get a certificate from file.		
         /// </summary>

@@ -3,6 +3,7 @@ using Manager;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IdentityModel.Policy;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -18,6 +19,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
+            Debugger.Launch();
             string srvCertCN = "Service";
                 //Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 
@@ -40,11 +42,11 @@ namespace Server
             ///Set appropriate service's certificate on the host. Use CertManager class to obtain the certificate based on the "srvCertCN"
             host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, srvCertCN);
 
-            host.Authorization.ServiceAuthorizationManager = new CustomAuthorizationManager();
-            host.Authorization.PrincipalPermissionMode = System.ServiceModel.Description.PrincipalPermissionMode.Custom;
-            List<IAuthorizationPolicy> policies = new List<IAuthorizationPolicy>();
-            policies.Add(new CustomAuthorizationPolicy());
-            host.Authorization.ExternalAuthorizationPolicies = policies.AsReadOnly();
+            //host.Authorization.ServiceAuthorizationManager = new CustomAuthorizationManager();
+            //host.Authorization.PrincipalPermissionMode = System.ServiceModel.Description.PrincipalPermissionMode.Custom;
+            //List<IAuthorizationPolicy> policies = new List<IAuthorizationPolicy>();
+            //policies.Add(new CustomAuthorizationPolicy());
+            //host.Authorization.ExternalAuthorizationPolicies = policies.AsReadOnly();
 
             try
             {

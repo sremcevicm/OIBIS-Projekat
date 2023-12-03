@@ -2,6 +2,7 @@
 using Manager;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
@@ -15,6 +16,7 @@ namespace Client
     {
         static void Main(string[] args)
         {
+            Debugger.Launch();
             string srvCertCN = "Service";
             NetTcpBinding binding = new NetTcpBinding();
             //string address = "net.tcp://localhost:9999/SecurityService";
@@ -26,6 +28,7 @@ namespace Client
             X509Certificate2 srvCert = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, srvCertCN);
             EndpointAddress address = new EndpointAddress(new Uri("net.tcp://localhost:4000/Servis"),
                                       new X509CertificateEndpointIdentity(srvCert));
+            
 
             using (ClientProxy proxy = new ClientProxy(binding, address))
             {
@@ -34,8 +37,8 @@ namespace Client
                 proxy.DodajProjekciju();
                 //proxy.IzmeniProjekciju();
                 //proxy.IzmeniPopust();
-                //proxy.NapraviRezervaciju();
-                //proxy.PlatiRezervaciju();
+               //proxy.NapraviRezervaciju();
+                proxy.PlatiRezervaciju();
                 Console.WriteLine("TestCommunication() finished. Press <enter> to continue ...");
                 Console.ReadLine();
             }

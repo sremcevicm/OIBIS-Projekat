@@ -14,6 +14,7 @@ namespace Client
     public class ClientProxy : ChannelFactory<IServis>, IServis, IDisposable
     {
         IServis factory;
+        //string group;
 
         public ClientProxy(NetTcpBinding binding, EndpointAddress address) : base(binding, address)
         {
@@ -24,6 +25,7 @@ namespace Client
 
             /// Set appropriate client's certificate on the channel. Use CertManager class to obtain the certificate based on the "cltCertCN"
             this.Credentials.ClientCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, cltCertCN);
+            //group = groupName(this.Credentials.ClientCertificate.Certificate);
 
             factory = this.CreateChannel();
         }
@@ -35,7 +37,7 @@ namespace Client
             try
             {
                 factory.DodajProjekciju();
-                Console.WriteLine("Dodavanje projekcije je odobreno");
+                //Console.WriteLine("Dodavanje projekcije je odobreno");
             }
             catch (Exception e)
             {
@@ -87,13 +89,14 @@ namespace Client
             try
             {
                 factory.PlatiRezervaciju();
-                Console.WriteLine("Placanje rezervacije je odobreno");
             }
             catch (Exception e)
             {
                 Console.WriteLine("Greska prilikom placanja rezervacije! Error: {0}", e.Message);
             }
         }
+
+        
 
         public void Dispose()
         {
