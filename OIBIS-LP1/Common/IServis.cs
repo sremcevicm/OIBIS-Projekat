@@ -12,7 +12,7 @@ namespace Common
     public interface IServis
     {
         [OperationContract]
-        void DodajProjekciju();
+        void DodajProjekciju(string imeProjekcije, string vremeRezervacije, int sala, double cenaKarte);
         [OperationContract]
         void IzmeniProjekciju();
         [OperationContract]

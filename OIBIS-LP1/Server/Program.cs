@@ -19,7 +19,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            Debugger.Launch();
+            //Debugger.Launch();
             string srvCertCN = "Service";
                 //Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 

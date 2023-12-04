@@ -28,16 +28,17 @@ namespace Client
             //group = groupName(this.Credentials.ClientCertificate.Certificate);
 
             factory = this.CreateChannel();
+            //this.State = CommunicationState.Opened;
         }
 
        
 
-        public void DodajProjekciju()
+        public void DodajProjekciju(string imeProjekcije, string vremeRezervacije, int sala, double cenaKarte)
         {
             try
             {
-                factory.DodajProjekciju();
-                //Console.WriteLine("Dodavanje projekcije je odobreno");
+                factory.DodajProjekciju(imeProjekcije, vremeRezervacije, sala, cenaKarte);
+                Console.WriteLine($"Dodana projekcija: {imeProjekcije}, Vreme: {vremeRezervacije}, Sala: {sala}, Cena karte: {cenaKarte}");
             }
             catch (Exception e)
             {
@@ -89,6 +90,7 @@ namespace Client
             try
             {
                 factory.PlatiRezervaciju();
+                Console.WriteLine("Placanje rezervacije je odobreno");
             }
             catch (Exception e)
             {
