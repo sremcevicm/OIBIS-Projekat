@@ -44,7 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IServis.cs" />
-    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\Popust.cs" />
+    <Compile Include="Models\Status.cs" />
     <Compile Include="Models\Projekcija.cs" />
     <Compile Include="Models\Rezervacija.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

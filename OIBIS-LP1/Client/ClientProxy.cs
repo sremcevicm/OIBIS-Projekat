@@ -33,7 +33,7 @@ namespace Client
 
        
 
-        public void DodajProjekciju(string imeProjekcije, string vremeRezervacije, int sala, double cenaKarte)
+        public void DodajProjekciju(string imeProjekcije, DateTime vremeRezervacije, int sala, double cenaKarte)
         {
             try
             {
@@ -46,12 +46,12 @@ namespace Client
             }
         }
 
-        public void IzmeniPopust()
+        public void IzmeniPopust(int noviPopust)
         {
             try
             {
-                factory.IzmeniPopust();
-                Console.WriteLine("Izmena popusta je odobrena");
+                factory.IzmeniPopust(noviPopust);
+                Console.WriteLine($"Izmena popusta je odobrena. On sada iznosi {noviPopust}");
             }
             catch (Exception e)
             {
@@ -59,12 +59,12 @@ namespace Client
             }
         }
 
-        public void IzmeniProjekciju()
+        public void IzmeniProjekciju(string imeProjekcije, DateTime novoVremeProjekcije, int novaSala, double novaCenaKarte)
         {
             try
             {
-                factory.IzmeniProjekciju();
-                Console.WriteLine("Izmena projekcije je odobreno");
+                factory.IzmeniProjekciju(imeProjekcije, novoVremeProjekcije, novaSala, novaCenaKarte);
+                Console.WriteLine($"Izmenjena projekcija: {imeProjekcije}! Izmene ---> Vreme: {novoVremeProjekcije}, Sala: {novaSala}, Cena karte: {novaCenaKarte}");
             }
             catch (Exception e)
             {
@@ -72,12 +72,12 @@ namespace Client
             }
         }
 
-        public void NapraviRezervaciju()
+        public void NapraviRezervaciju(string imeProjekcije, int brojKarata)
         {
             try
             {
-                factory.NapraviRezervaciju();
-                Console.WriteLine("Kreiranje rezervacije je odobreno");
+                factory.NapraviRezervaciju(imeProjekcije, brojKarata);
+                Console.WriteLine("Kreiranje rezervacije je odobreno. Broj Vase rezervacije je: ");
             }
             catch (Exception e)
             {
@@ -85,12 +85,12 @@ namespace Client
             }
         }
 
-        public void PlatiRezervaciju()
+        public void PlatiRezervaciju(string idRezervacije)
         {
             try
             {
-                factory.PlatiRezervaciju();
-                Console.WriteLine("Placanje rezervacije je odobreno");
+                factory.PlatiRezervaciju(idRezervacije);
+                Console.WriteLine("Placanje rezervacije je odobreno. Platili ste ukupno");
             }
             catch (Exception e)
             {

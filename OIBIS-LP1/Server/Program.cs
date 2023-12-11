@@ -9,12 +9,15 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.Text;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace Server
 {
+    [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     class Program
     {
         static void Main(string[] args)
@@ -42,11 +45,13 @@ namespace Server
             ///Set appropriate service's certificate on the host. Use CertManager class to obtain the certificate based on the "srvCertCN"
             host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, srvCertCN);
 
-            //host.Authorization.ServiceAuthorizationManager = new CustomAuthorizationManager();
-            //host.Authorization.PrincipalPermissionMode = System.ServiceModel.Description.PrincipalPermissionMode.Custom;
-            //List<IAuthorizationPolicy> policies = new List<IAuthorizationPolicy>();
-            //policies.Add(new CustomAuthorizationPolicy());
-            //host.Authorization.ExternalAuthorizationPolicies = policies.AsReadOnly();
+            ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
+            newAudit.AuditLogLocation = AuditLogLocation.Application;
+            newAudit.ServiceAuthorizationAuditLevel = AuditLevel.SuccessOrFailure;
+
+            host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
+            host.Description.Behaviors.Add(newAudit);
+
 
             try
             {

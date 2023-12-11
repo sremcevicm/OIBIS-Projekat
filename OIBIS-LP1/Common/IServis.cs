@@ -12,14 +12,14 @@ namespace Common
     public interface IServis
     {
         [OperationContract]
-        void DodajProjekciju(string imeProjekcije, string vremeRezervacije, int sala, double cenaKarte);
+        void DodajProjekciju(string imeProjekcije, DateTime vremeProjekcije, int sala, double cenaKarte);
         [OperationContract]
-        void IzmeniProjekciju();
+        void IzmeniProjekciju(string imeProjekcije, DateTime novoVremeProjekcije, int novaSala, double novaCenaKarte);
         [OperationContract]
-        void IzmeniPopust();
+        void IzmeniPopust(int noviPopust);
         [OperationContract]
-        void NapraviRezervaciju();
+        void NapraviRezervaciju(string imeProjekcije, int brojKarata);
         [OperationContract]
-        void PlatiRezervaciju();
+        void PlatiRezervaciju(string idRezervacije);
     }
 }

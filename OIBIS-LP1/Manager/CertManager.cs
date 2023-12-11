@@ -30,17 +30,6 @@ namespace Manager
             return null;
         }
 
-        public static string GroupName(string rawname)
-        {
-            string[] temp = rawname.Split(' ');
-            if (temp[1] != null)
-            {
-                return temp[1];
-            }
-
-            return null;
-        }
-
         /// <summary>
         /// Get a certificate from file.		
         /// </summary>

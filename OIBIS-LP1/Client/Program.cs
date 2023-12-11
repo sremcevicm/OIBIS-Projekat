@@ -53,53 +53,54 @@ namespace Client
                         switch (choice)
                         {
                             case 1:
-                                Console.WriteLine("Unesite ime projekcije:");
-                                string imeProjekcije = Console.ReadLine();
+                                Console.WriteLine("Enter imeProjekcije:");
+                                string imeProjekcije1 = Console.ReadLine();
+                                Console.WriteLine("Enter vremeProjekcije (e.g., '2023-12-11T14:30:00'):");
+                                DateTime vremeProjekcije1 = DateTime.Parse(Console.ReadLine());
+                                Console.WriteLine("Enter sala:");
+                                int sala1 = int.Parse(Console.ReadLine());
+                                Console.WriteLine("Enter cenaKarte:");
+                                double cenaKarte1 = double.Parse(Console.ReadLine());
 
-                                Console.WriteLine("Unesite vreme rezervacije:");
-                                string vremeRezervacije = Console.ReadLine();
-
-                                Console.WriteLine("Unesite broj sale:");
-                                if (int.TryParse(Console.ReadLine(), out int sala))
-                                {
-                                    Console.WriteLine("Unesite cenu karte:");
-                                    if (double.TryParse(Console.ReadLine(), out double cenaKarte))
-                                    {
-                                        proxy.DodajProjekciju(imeProjekcije, vremeRezervacije, sala, cenaKarte);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Nevažeći unos za cenu karte.");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Nevažeći unos za broj sale.");
-                                }
+                                proxy.DodajProjekciju(imeProjekcije1, vremeProjekcije1, sala1, cenaKarte1);
                                 break;
 
                             case 2:
-                                proxy.IzmeniProjekciju();
+                                Console.WriteLine("Enter imeProjekcije:");
+                                string imeProjekcije2 = Console.ReadLine();
+                                Console.WriteLine("Enter novoVremeProjekcije (e.g., '2023-12-11T15:30:00'):");
+                                DateTime novoVremeProjekcije2 = DateTime.Parse(Console.ReadLine());
+                                Console.WriteLine("Enter novaSala:");
+                                int novaSala2 = int.Parse(Console.ReadLine());
+                                Console.WriteLine("Enter novaCenaKarte:");
+                                double novaCenaKarte2 = double.Parse(Console.ReadLine());
+
+                                proxy.IzmeniProjekciju(imeProjekcije2, novoVremeProjekcije2, novaSala2, novaCenaKarte2);
                                 break;
 
                             case 3:
-                                proxy.IzmeniPopust();
+                                Console.WriteLine("Enter noviPopust:");
+                                int noviPopust3 = int.Parse(Console.ReadLine());
+                                proxy.IzmeniPopust(noviPopust3);
                                 break;
 
                             case 4:
-                                proxy.NapraviRezervaciju();
+                                Console.WriteLine("Enter imeProjekcije:");
+                                string imeProjekcije4 = Console.ReadLine();
+                                Console.WriteLine("Enter brojKarata:");
+                                int brojKarata4 = int.Parse(Console.ReadLine());
+
+                                proxy.NapraviRezervaciju(imeProjekcije4, brojKarata4);
                                 break;
 
                             case 5:
-                                proxy.PlatiRezervaciju();
+                                Console.WriteLine("Enter idRezervacije:");
+                                string idRezervacije5 = Console.ReadLine();
+                                proxy.PlatiRezervaciju(idRezervacije5);
                                 break;
 
-                            case 0:
-                                Console.WriteLine("Izlaz iz programa.");
-                                return;
-
                             default:
-                                Console.WriteLine("Nevažeći izbor. Pokušajte ponovo.");
+                                Console.WriteLine("Invalid choice. Please enter a number between 1 and 5.");
                                 break;
                         }
                     }

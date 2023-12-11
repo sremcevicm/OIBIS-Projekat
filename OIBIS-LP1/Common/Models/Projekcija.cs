@@ -14,9 +14,8 @@ namespace Common.Models
         private int sala;
         private double cenaKarte;
 
-        public Projekcija(int id, string naziv, DateTime vremeProjekcije, int sala, double cenaKarte)
+        public Projekcija(string naziv, DateTime vremeProjekcije, int sala, double cenaKarte)
         {
-            this.Id = id;
             this.Naziv = naziv;
             this.VremeProjekcije = vremeProjekcije;
             this.Sala = sala;

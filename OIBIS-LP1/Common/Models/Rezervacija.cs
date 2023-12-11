@@ -13,14 +13,15 @@ namespace Common.Models
         DateTime vremeRezervacije;
         int kolicinaKarata;
         Status stanjeRezervacije;
+        string kreirao;
 
-        public Rezervacija(int id, int idProjekcije, DateTime vremeRezervacije, int kolicinaKarata, Status stanjeRezervacije)
+        public Rezervacija(int idProjekcije, DateTime vremeRezervacije, int kolicinaKarata, Status stanjeRezervacije, string kreirao)
         {
-            this.Id = id;
             this.IdProjekcije = idProjekcije;
             this.VremeRezervacije = vremeRezervacije;
             this.KolicinaKarata = kolicinaKarata;
             this.StanjeRezervacije = stanjeRezervacije;
+            this.Kreirao = kreirao;
         }
 
         public int Id { get => id; set => id = value; }
@@ -28,5 +29,6 @@ namespace Common.Models
         public DateTime VremeRezervacije { get => vremeRezervacije; set => vremeRezervacije = value; }
         public int KolicinaKarata { get => kolicinaKarata; set => kolicinaKarata = value; }
         public Status StanjeRezervacije { get => stanjeRezervacije; set => stanjeRezervacije = value; }
+        public string Kreirao { get => kreirao; set => kreirao = value; }
     }
 }
