@@ -18,8 +18,11 @@ namespace Common
         [OperationContract]
         void IzmeniPopust(int noviPopust);
         [OperationContract]
-        void NapraviRezervaciju(string imeProjekcije, int brojKarata);
+        int NapraviRezervaciju(string imeProjekcije, int brojKarata);
         [OperationContract]
-        void PlatiRezervaciju(string idRezervacije);
+        int PlatiRezervaciju(int idRezervacije);
+
+        [OperationContract]
+        string GetProjekcijeString();
     }
 }

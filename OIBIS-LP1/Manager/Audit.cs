@@ -86,12 +86,12 @@ namespace Manager
             }
         }
 
-        public static void DataBaseWriteSuccess(string userName)
+        public static void DataBaseWriteSuccess(string username)
         {
             if (eventLog != null)
             {
                 string DataBaseWriteSuccess = AuditEvents.DataBaseWriteSuccess;
-                string message = String.Format(DataBaseWriteSuccess, userName);
+                string message = String.Format(DataBaseWriteSuccess, username);
                 eventLog.WriteEntry(message);
             }
             else
@@ -105,7 +105,7 @@ namespace Manager
         {
             if (eventLog != null)
             {
-                string DataBaseReadSuccess = AuditEvents.DataBaseWriteSuccess;
+                string DataBaseReadSuccess = AuditEvents.DataBaseReadSuccess;
                 string message = String.Format(DataBaseReadSuccess, tableName);
                 eventLog.WriteEntry(message);
             }

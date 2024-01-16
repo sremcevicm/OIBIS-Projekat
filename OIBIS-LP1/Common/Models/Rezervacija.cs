@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Common.Models
 {
     public class Rezervacija
     {
-        private int id;
-        int idProjekcije;
-        DateTime vremeRezervacije;
-        int kolicinaKarata;
-        Status stanjeRezervacije;
-        string kreirao;
+        [Key]
+        public int RezervacijaId { get; set; }
+        public int IdProjekcije { get; set; }
+        public DateTime VremeRezervacije { get; set; }
+        public int KolicinaKarata { get; set; }
+        public Status StanjeRezervacije { get; set; }
+        public string Kreirao { get; set; }
 
         public Rezervacija(int idProjekcije, DateTime vremeRezervacije, int kolicinaKarata, Status stanjeRezervacije, string kreirao)
         {
@@ -24,11 +22,9 @@ namespace Common.Models
             this.Kreirao = kreirao;
         }
 
-        public int Id { get => id; set => id = value; }
-        public int IdProjekcije { get => idProjekcije; set => idProjekcije = value; }
-        public DateTime VremeRezervacije { get => vremeRezervacije; set => vremeRezervacije = value; }
-        public int KolicinaKarata { get => kolicinaKarata; set => kolicinaKarata = value; }
-        public Status StanjeRezervacije { get => stanjeRezervacije; set => stanjeRezervacije = value; }
-        public string Kreirao { get => kreirao; set => kreirao = value; }
+        public Rezervacija()
+        {
+            // Pravilo koje zahteva postojanje parametraless konstruktora za Entity Framework
+        }
     }
 }

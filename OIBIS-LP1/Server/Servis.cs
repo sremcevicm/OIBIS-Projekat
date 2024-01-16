@@ -20,41 +20,36 @@ namespace Server
     //[ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class Servis : IServis
     {
-        Dictionary<int, Projekcija> sveProjekcije = new Dictionary<int, Projekcija>();
-        Dictionary<int, Rezervacija> sveRezervacije = new Dictionary<int, Rezervacija>();
 
         public void DodajProjekciju(string imeProjekcije, DateTime vremeProjekcije, int sala, double cenaKarte)
         {
+
             X509Certificate2 clcert = clientCert();
             string rawname = clcert.SubjectName.Name;
 
+            
+            Audit.AuthenticationSuccess(rawname);
+
             if (rawname.Contains("admin"))
             {
-                
 
-                try
-                {
-                    Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
 
-                foreach (Projekcija p in sveProjekcije.Values)
+                //DbHelper.DodajProjekciju(imeProjekcije, vremeProjekcije, sala, cenaKarte, rawname);
+                using (var dbContext = new MyDbContext())
                 {
-                    if (p.Naziv.Equals(imeProjekcije))
+                    var novaProjekcija = new Projekcija { Naziv = imeProjekcije, CenaKarte = cenaKarte, VremeProjekcije = vremeProjekcije, Sala = sala};
+                    dbContext.projekcijas.Add(novaProjekcija);
+                    if(dbContext.SaveChanges() > 0)
                     {
-                        Console.WriteLine("Vec postoji projekcija pod tim imenom");
+                        Audit.DataBaseWriteSuccess(rawname);
                     }
                     else
                     {
-                        //int id = random.Next(0, 1000000);
-                        //sveProjekcije.Add(id, new Projekcija(imeProjekcije, DateTime.Now, sala, cenaKarte));
-                        Console.WriteLine($"Admin je dodao projekciju koja se zove: {imeProjekcije}");
-
+                        //ovde ide audit za database write failed
                     }
                 }
+                
             }
             else
             {
@@ -65,12 +60,7 @@ namespace Server
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
-                }
-
-                DateTime time = DateTime.Now;
-                string message = String.Format("Access is denied. User {0} tried to call DodajProjekciju method (time: {1}). " +
-                    "For this method user needs to be member of group Admin.", rawname, time.TimeOfDay);
-                throw new FaultException<SecurityException>(new SecurityException(message));
+                } 
             }
         }
         public void IzmeniPopust(int noviPopust)
@@ -78,22 +68,37 @@ namespace Server
             X509Certificate2 clcert = clientCert();
             string rawname = clcert.SubjectName.Name;
 
-
+            Audit.AuthenticationSuccess(rawname);
 
             if (rawname.Contains("admin"))
             {
 
-                try
-                {
-                    Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
 
-                
-                Console.WriteLine("Admin je izmenio popust");
+                using (var dbContext = new MyDbContext()) 
+                {
+                    var existingDiscount = dbContext.popusts.SingleOrDefault();
+                    if (existingDiscount == null)
+                    {
+                        // Nema postojećeg popusta, dodajte novi
+                        var newDiscount = new Popust { Procenat = noviPopust };
+                        dbContext.popusts.Add(newDiscount);
+                    }
+                    else
+                    {
+                        // Postoji popust, izmenite ga
+                        existingDiscount.Procenat = noviPopust;
+                    }
+
+                    if (dbContext.SaveChanges() > 0)
+                    {
+                        Audit.DataBaseWriteSuccess(rawname);
+                    }
+                    else
+                    {
+                        //ovde ide audit za failed
+                    }
+                }
             }
             else
             {
@@ -105,11 +110,6 @@ namespace Server
                 {
                     Console.WriteLine(e.Message);
                 }
-
-                DateTime time = DateTime.Now;
-                string message = String.Format("Access is denied. User {0} tried to call IzmeniPopust method (time: {1}). " +
-                    "For this method user needs to be member of group Admin.", rawname, time.TimeOfDay);
-                throw new FaultException<SecurityException>(new SecurityException(message));
             }
         }
         //[PrincipalPermission(SecurityAction.Demand, Role = "Administrate")]
@@ -119,18 +119,35 @@ namespace Server
             string rawname = clcert.SubjectName.Name;
             //string clientname = CertManager.GroupName(rawname);
 
+            Audit.AuthenticationSuccess(rawname);
+
             if (rawname.Contains("admin"))
             {
-                try
-                {
-                    Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                Console.WriteLine("Admin je izmenio projekciju");
+                Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
 
+                using (var dbContext = new MyDbContext())
+                {
+                    var projekcijaZaIzmenu = dbContext.projekcijas.FirstOrDefault(p => p.Naziv.Equals(imeProjekcije));
+                    if(projekcijaZaIzmenu != null)
+                    {
+                        projekcijaZaIzmenu.VremeProjekcije = novoVremeProjekcije;
+                        projekcijaZaIzmenu.Sala = novaSala;
+                        projekcijaZaIzmenu.CenaKarte = novaCenaKarte;
+
+                        if (dbContext.SaveChanges() > 0)
+                        {
+                            Audit.DataBaseWriteSuccess(rawname);
+                        }
+                        else
+                        {
+                            //ovde ide audit za database write failed
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nema projekcije sa tim imenom");
+                    }
+                }
                 
             }
             else
@@ -143,32 +160,59 @@ namespace Server
                 {
                     Console.WriteLine(e.Message);
                 }
-
-                DateTime time = DateTime.Now;
-                string message = String.Format("Access is denied. User {0} tried to call IzmeniProjekciju method (time: {1}). " +
-                    "For this method user needs to be member of group Admin.", rawname, time.TimeOfDay);
-                throw new FaultException<SecurityException>(new SecurityException(message));
             }
         }
         //[PrincipalPermission(SecurityAction.Demand, Role = "Korisnik")]
-        public void NapraviRezervaciju(string imeProjekcije, int brojKarata)
+        public int NapraviRezervaciju(string imeProjekcije, int brojKarata)
         {
-            //if (Thread.CurrentPrincipal.IsInRole("korisnik") || Thread.CurrentPrincipal.IsInRole("vip"))
             X509Certificate2 clcert = clientCert();
             string rawname = clcert.SubjectName.Name;
-            //string clientname = CertManager.GroupName(rawname);
+            int retid = -1;
+
+            Audit.AuthenticationSuccess(rawname);
 
             if (rawname.Contains("korisnik") || rawname.Contains("vip"))
             {
-                try
+                ProveriDodajKorisnika(rawname);
+                Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
+
+                using (var dbContext = new MyDbContext())
                 {
-                    Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
+                    var p = dbContext.projekcijas.FirstOrDefault(pr => pr.Naziv.Equals(imeProjekcije));   
+                    if (p.Naziv.Equals(imeProjekcije))
+                    {
+                        var r = new Rezervacija
+                        {
+                            IdProjekcije = p.ProjekcijaId,
+                            VremeRezervacije = DateTime.Now,
+                            KolicinaKarata = brojKarata,
+                            StanjeRezervacije = Status.NEPLACENA,
+                            Kreirao = rawname
+                        };
+
+                        dbContext.rezervacijas.Add(r);
+                        //retid = dbContext.rezervacijas.Add(r).RezervacijaId;
+                        if (dbContext.SaveChanges() > 0)
+                        {
+                            Audit.DataBaseWriteSuccess(rawname);
+                           
+                        }
+                        else
+                        {
+                            //ovde ide audit za database write failed
+                        }
+
+                        retid = r.RezervacijaId;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nema projekcije pod tim nazivom");
+                        return -1;
+                    }
+                        
+                    
+                    return retid;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                Console.WriteLine("Korisnik je napravio rezervaiju");
 
             }
             else
@@ -181,50 +225,126 @@ namespace Server
                 {
                     Console.WriteLine(e.Message);
                 }
+                
 
-                DateTime time = DateTime.Now;
-                string message = String.Format("Access is denied. User {0} tried to call NapraviRezervaciju method (time: {1}). " +
-                    "For this method user needs to be member of group Korisnik or Vip.", rawname, time.TimeOfDay);
-                throw new FaultException<SecurityException>(new SecurityException(message));
+                //DateTime time = DateTime.Now;
+                
+                return -1;
             }
+            
         }
         //[PrincipalPermission(SecurityAction.Demand, Role = "Korisnik")]
-        public void PlatiRezervaciju(string idRezervacije)
+        public int PlatiRezervaciju(int idRezervacije)
         {
             X509Certificate2 clcert = clientCert();
             string rawname = clcert.SubjectName.Name;
             //string clientname = CertManager.GroupName(rawname);
+            Audit.AuthenticationSuccess(rawname);
+            double ukupnaCena = -1;
+            int cena = -1;
 
             if (rawname.Contains("korisnik") || rawname.Contains("vip"))
             {
+                Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
+
+                //Console.WriteLine("Korisnik je platio rezervaciju");
+                using (var dbContext = new MyDbContext())
+                {
+                    var rezervacija = dbContext.rezervacijas.FirstOrDefault(r => r.RezervacijaId == idRezervacije && r.StanjeRezervacije == Status.NEPLACENA);
+                    if (rezervacija != null)
+                    {
+                        var korisnik = dbContext.korisniks.FirstOrDefault(k => k.ImeKorisnika == rawname);
+                        var projekcija = dbContext.projekcijas.FirstOrDefault(p => p.ProjekcijaId == rezervacija.IdProjekcije);
+                        
+
+                        if (rawname.Contains("vip"))
+                        {
+                            var popust = dbContext.popusts.SingleOrDefault();
+                            ukupnaCena = (projekcija.CenaKarte * rezervacija.KolicinaKarata) - (projekcija.CenaKarte * rezervacija.KolicinaKarata) * (popust.Procenat / 100);
+                            
+                        }
+                        else
+                        {
+                            ukupnaCena = projekcija.CenaKarte * rezervacija.KolicinaKarata;
+                        }
+
+                        if (korisnik.StanjeNaRacunu >= ukupnaCena)
+                        {
+                            korisnik.StanjeNaRacunu -= Convert.ToInt32(ukupnaCena);
+                            rezervacija.StanjeRezervacije = Status.PLACENA;
+
+                            if (dbContext.SaveChanges() > 0)
+                            {
+                                Audit.DataBaseWriteSuccess(rawname);
+                            }
+                            else
+                            {
+                                //ovde ide audit za database write failed
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ne postoji rezervacija sa tim id-em");
+                    }
+                }
+                return cena = Convert.ToInt32(ukupnaCena);
+            }
+            else
+            {
                 try
                 {
-                    Audit.AuthorizationSuccess(rawname, OperationContext.Current.IncomingMessageHeaders.Action);
+                    Audit.AuthorizationFailed(rawname, OperationContext.Current.IncomingMessageHeaders.Action, "This method requires Vip or Korisnik permission");
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
-                Console.WriteLine("Korisnik je platio rezervaciju");
 
                 
+                return -1;
             }
-            else
-            {
-                try
-                {
-                    Audit.AuthorizationFailed(rawname, OperationContext.Current.IncomingMessageHeaders.Action, "This method requires Vip or Korisnik permission");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+        }
 
-                DateTime time = DateTime.Now;
-                string message = String.Format("Access is denied. User {0} tried to call PlatiRezervaciju method (time: {1}). " +
-                    "For this method user needs to be member of group Korisnik or VIP.", rawname, time.TimeOfDay);
-                throw new FaultException<SecurityException>(new SecurityException(message));
+        private void ProveriDodajKorisnika(string rawname)
+        {
+            Random random = new Random();
+            using (var dbContext = new MyDbContext()) // Zamijenite MyDbContext sa stvarnim imenom vašeg DbContext-a
+            {
+                // Provera da li korisnik postoji u bazi
+                var korisnik = dbContext.korisniks.FirstOrDefault(k => k.ImeKorisnika == rawname);
+
+                if (korisnik == null)
+                {
+                    // Kreiranje novog korisnika ako ne postoji
+                    var noviKorisnik = new Korisnik
+                    {
+                        ImeKorisnika = rawname,
+                        StanjeNaRacunu = random.Next(3000, 15001) // Postavite željeno stanje na računu
+                                           // Dodajte ostale propertije prema vašim potrebama
+                    };
+
+                    // Dodajte novog korisnika u DbSet (tabelu) u DbContext-u
+                    dbContext.korisniks.Add(noviKorisnik);
+
+                    // Sačuvajte promene u bazi podataka
+                    if (dbContext.SaveChanges() > 0)
+                    {
+                        Audit.DataBaseWriteSuccess(rawname);
+                    }
+                    else
+                    {
+                        //ovde ide audit za database write failed
+                    }
+
+                    Console.WriteLine("Novi korisnik je uspešno kreiran.");
+                }
+                else
+                {
+                    Console.WriteLine("Korisnik već postoji u bazi.");
+                }
             }
+            
         }
 
         private X509Certificate2 clientCert()
@@ -235,6 +355,26 @@ namespace Server
             return cCert;
         }
 
-        
+        public string GetProjekcijeString()
+        {
+            using (var dbContext = new MyDbContext()) // Zamijenite MyDbContext sa stvarnim imenom vaše DbContext klase
+            {
+                List<Projekcija> projekcije = dbContext.projekcijas.ToList();
+
+                if (projekcije.Count == 0)
+                {
+                    return "Nema dostupnih projekcija.";
+                }
+
+                // Formiranje stringa za lep prikaz
+                string result = "Projekcije:\n";
+                foreach (var projekcija in projekcije)
+                {
+                    result += $"ID: {projekcija.ProjekcijaId}, Naziv: {projekcija.Naziv}, Vreme: {projekcija.VremeProjekcije}, Sala: {projekcija.Sala}, Cena: {projekcija.CenaKarte}\n";
+                }
+
+                return result;
+            }
+        }
     }
 }

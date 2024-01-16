@@ -17,7 +17,7 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            Debugger.Launch();
+            //Debugger.Launch();
             string srvCertCN = "Service";
             NetTcpBinding binding = new NetTcpBinding();
             //string address = "net.tcp://localhost:9999/SecurityService";
@@ -39,6 +39,9 @@ namespace Client
 
                 while (true)
                 {
+                    var result = proxy.GetProjekcijeString();
+                    Console.WriteLine(result);
+                    Console.WriteLine();
                     Console.WriteLine("Izaberite opciju:");
                     Console.WriteLine("1. Dodaj projekciju");
                     Console.WriteLine("2. Izmeni projekciju");
@@ -57,6 +60,11 @@ namespace Client
                                 string imeProjekcije1 = Console.ReadLine();
                                 Console.WriteLine("Enter vremeProjekcije (e.g., '2023-12-11T14:30:00'):");
                                 DateTime vremeProjekcije1 = DateTime.Parse(Console.ReadLine());
+                                if(vremeProjekcije1 < DateTime.Now)
+                                {
+                                    Console.WriteLine("Morate uneti datum koji je u buducnosti");
+                                    break;
+                                }
                                 Console.WriteLine("Enter sala:");
                                 int sala1 = int.Parse(Console.ReadLine());
                                 Console.WriteLine("Enter cenaKarte:");
@@ -70,6 +78,11 @@ namespace Client
                                 string imeProjekcije2 = Console.ReadLine();
                                 Console.WriteLine("Enter novoVremeProjekcije (e.g., '2023-12-11T15:30:00'):");
                                 DateTime novoVremeProjekcije2 = DateTime.Parse(Console.ReadLine());
+                                if (novoVremeProjekcije2 < DateTime.Now)
+                                {
+                                    Console.WriteLine("Morate uneti datum koji je u buducnosti");
+                                    break;
+                                }
                                 Console.WriteLine("Enter novaSala:");
                                 int novaSala2 = int.Parse(Console.ReadLine());
                                 Console.WriteLine("Enter novaCenaKarte:");
@@ -85,6 +98,7 @@ namespace Client
                                 break;
 
                             case 4:
+                                
                                 Console.WriteLine("Enter imeProjekcije:");
                                 string imeProjekcije4 = Console.ReadLine();
                                 Console.WriteLine("Enter brojKarata:");
@@ -94,8 +108,9 @@ namespace Client
                                 break;
 
                             case 5:
+                                Console.WriteLine();
                                 Console.WriteLine("Enter idRezervacije:");
-                                string idRezervacije5 = Console.ReadLine();
+                                int idRezervacije5 = Int32.Parse(Console.ReadLine());
                                 proxy.PlatiRezervaciju(idRezervacije5);
                                 break;
 

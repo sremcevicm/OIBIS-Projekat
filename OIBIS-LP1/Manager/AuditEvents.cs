@@ -11,12 +11,12 @@ namespace Manager
 	public enum AuditEventTypes
 	{
 		AuthenticationSuccess = 0,
-		AuthorizationSuccess = 1,
-		AuthorizationFailed = 2,
-		DataBaseWriteSuccess = 4,
+		AuthorizationSuccess = 2,
+		AuthorizationFailed = 1,
+		DataBaseWriteSuccess = 6,
 		DataBaseWriteFailed = 5,
-		DataBaseReadSuccess = 6,
-		DataBaseReadFailed = 7
+		DataBaseReadSuccess = 4,
+		DataBaseReadFailed = 3
 	}
 	public class AuditEvents
     {
@@ -75,5 +75,14 @@ namespace Manager
             }
 
         }
+
+		public static string DataBaseReadSuccess
+		{
+			get
+			{
+				return ResourceMgr.GetString(AuditEventTypes.DataBaseReadSuccess.ToString());
+			}
+
+		}
 	}
 }

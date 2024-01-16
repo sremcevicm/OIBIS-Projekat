@@ -43,6 +43,10 @@ namespace Client
             catch (Exception e)
             {
                 Console.WriteLine("Greska prilikom dodavanja projekcije! Error: {0}", e.Message);
+                if (e.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception: " + e.InnerException.Message);
+                }
             }
         }
 
@@ -72,29 +76,33 @@ namespace Client
             }
         }
 
-        public void NapraviRezervaciju(string imeProjekcije, int brojKarata)
+        public int NapraviRezervaciju(string imeProjekcije, int brojKarata)
         {
             try
             {
-                factory.NapraviRezervaciju(imeProjekcije, brojKarata);
-                Console.WriteLine("Kreiranje rezervacije je odobreno. Broj Vase rezervacije je: ");
+                int broj = factory.NapraviRezervaciju(imeProjekcije, brojKarata);
+                Console.WriteLine("Kreiranje rezervacije je odobreno. Broj Vase rezervacije je: " + broj.ToString());
+                return broj;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Greska prilikom kreiranja rezervacije! Error: {0}", e.Message);
+                return -1;
             }
         }
 
-        public void PlatiRezervaciju(string idRezervacije)
+        public int PlatiRezervaciju(int idRezervacije)
         {
             try
             {
-                factory.PlatiRezervaciju(idRezervacije);
-                Console.WriteLine("Placanje rezervacije je odobreno. Platili ste ukupno");
+                int broj = factory.PlatiRezervaciju(idRezervacije);
+                Console.WriteLine("Placanje rezervacije je odobreno. Platili ste ukupno " + broj.ToString());
+                return broj;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Greska prilikom placanja rezervacije! Error: {0}", e.Message);
+                return -1;
             }
         }
 
@@ -108,6 +116,23 @@ namespace Client
             }
 
             this.Close();
+        }
+
+        public string GetProjekcijeString()
+        {
+            string result = "";
+            try
+            {
+                result = factory.GetProjekcijeString();
+                //Console.WriteLine("Placanje rezervacije je odobreno. Platili ste ukupno");
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Greska priliom iscitavanja projekcija! Error: {0}", e.Message);
+             
+            }
+            return result;
         }
     }
 }

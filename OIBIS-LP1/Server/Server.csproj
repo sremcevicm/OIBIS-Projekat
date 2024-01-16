@@ -70,6 +70,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\202401151545122_InitialCreate.cs" />
+    <Compile Include="Migrations\202401151545122_InitialCreate.designer.cs">
+      <DependentUpon>202401151545122_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202401152003275_tabelaKorisnik.cs" />
+    <Compile Include="Migrations\202401152003275_tabelaKorisnik.designer.cs">
+      <DependentUpon>202401152003275_tabelaKorisnik.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202401152017137_izmenaKorisnika.cs" />
+    <Compile Include="Migrations\202401152017137_izmenaKorisnika.designer.cs">
+      <DependentUpon>202401152017137_izmenaKorisnika.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="MyDbContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servis.cs" />
@@ -89,15 +103,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OibisDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="OibisDatabase_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>OibisDatabase.mdf</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
@@ -108,6 +113,17 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202401151545122_InitialCreate.resx">
+      <DependentUpon>202401151545122_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202401152003275_tabelaKorisnik.resx">
+      <DependentUpon>202401152003275_tabelaKorisnik.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202401152017137_izmenaKorisnika.resx">
+      <DependentUpon>202401152017137_izmenaKorisnika.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
