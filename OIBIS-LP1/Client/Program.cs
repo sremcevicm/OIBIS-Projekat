@@ -99,12 +99,12 @@ namespace Client
 
                             case 4:
                                 
-                                Console.WriteLine("Enter imeProjekcije:");
-                                string imeProjekcije4 = Console.ReadLine();
+                                Console.WriteLine("Enter idProjekcije:");
+                                int idProjekcije = Int32.Parse(Console.ReadLine());
                                 Console.WriteLine("Enter brojKarata:");
                                 int brojKarata4 = int.Parse(Console.ReadLine());
 
-                                proxy.NapraviRezervaciju(imeProjekcije4, brojKarata4);
+                                proxy.NapraviRezervaciju(idProjekcije, brojKarata4);
                                 break;
 
                             case 5:

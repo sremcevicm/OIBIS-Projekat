@@ -101,12 +101,42 @@ namespace Manager
             }
         }
 
-        public static void DataBaseReadSuccess(string tableName)
+        public static void DataBaseWriteFailed(string username, string errorMessage)
+        {
+            if (eventLog != null)
+            {
+                string DataBaseWriteFailed = AuditEvents.DataBaseWriteFailed;
+                string message = String.Format(DataBaseWriteFailed, username, errorMessage);
+                eventLog.WriteEntry(message);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("Error while trying to write event (eventid = {0}) to event log.",
+                    (int)AuditEventTypes.DataBaseWriteSuccess));
+            }
+        }
+
+        public static void DataBaseReadSuccess(string username)
         {
             if (eventLog != null)
             {
                 string DataBaseReadSuccess = AuditEvents.DataBaseReadSuccess;
-                string message = String.Format(DataBaseReadSuccess, tableName);
+                string message = String.Format(DataBaseReadSuccess, username);
+                eventLog.WriteEntry(message);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("Error while trying to write event (eventid = {0}) to event log.",
+                    (int)AuditEventTypes.DataBaseReadSuccess));
+            }
+        }
+
+        public static void DataBaseReadFailed(string username, string errorMessage)
+        {
+            if (eventLog != null)
+            {
+                string DataBaseReadFailed = AuditEvents.DataBaseReadFailed;
+                string message = String.Format(DataBaseReadFailed, username, errorMessage);
                 eventLog.WriteEntry(message);
             }
             else

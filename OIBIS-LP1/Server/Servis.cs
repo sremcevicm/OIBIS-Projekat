@@ -46,7 +46,7 @@ namespace Server
                     }
                     else
                     {
-                        //ovde ide audit za database write failed
+                        Audit.DataBaseWriteFailed(rawname, "Nije bilo nikakvih izmena");
                     }
                 }
                 
@@ -77,26 +77,34 @@ namespace Server
 
                 using (var dbContext = new MyDbContext()) 
                 {
-                    var existingDiscount = dbContext.popusts.SingleOrDefault();
-                    if (existingDiscount == null)
+                    try
                     {
-                        // Nema postojećeg popusta, dodajte novi
-                        var newDiscount = new Popust { Procenat = noviPopust };
-                        dbContext.popusts.Add(newDiscount);
-                    }
-                    else
-                    {
-                        // Postoji popust, izmenite ga
-                        existingDiscount.Procenat = noviPopust;
-                    }
+                        var existingDiscount = dbContext.popusts.SingleOrDefault();
+                        Audit.DataBaseReadSuccess(rawname);
+                        if (existingDiscount == null)
+                        {
+                            // Nema postojećeg popusta, dodajte novi
+                            var newDiscount = new Popust { Procenat = noviPopust };
+                            dbContext.popusts.Add(newDiscount);
+                        }
+                        else
+                        {
+                            // Postoji popust, izmenite ga
+                            existingDiscount.Procenat = noviPopust;
+                        }
 
-                    if (dbContext.SaveChanges() > 0)
-                    {
-                        Audit.DataBaseWriteSuccess(rawname);
+                        if (dbContext.SaveChanges() > 0)
+                        {
+                            Audit.DataBaseWriteSuccess(rawname);
+                        }
+                        else
+                        {
+                            Audit.DataBaseWriteFailed(rawname, "Nije bilo nikakvih izmena");
+                        }
                     }
-                    else
+                    catch(Exception ex)
                     {
-                        //ovde ide audit za failed
+                        Audit.DataBaseReadFailed(rawname, ex.Message);
                     }
                 }
             }
@@ -127,25 +135,34 @@ namespace Server
 
                 using (var dbContext = new MyDbContext())
                 {
-                    var projekcijaZaIzmenu = dbContext.projekcijas.FirstOrDefault(p => p.Naziv.Equals(imeProjekcije));
-                    if(projekcijaZaIzmenu != null)
+                    try
                     {
-                        projekcijaZaIzmenu.VremeProjekcije = novoVremeProjekcije;
-                        projekcijaZaIzmenu.Sala = novaSala;
-                        projekcijaZaIzmenu.CenaKarte = novaCenaKarte;
-
-                        if (dbContext.SaveChanges() > 0)
+                        var projekcijaZaIzmenu = dbContext.projekcijas.FirstOrDefault(p => p.Naziv.Equals(imeProjekcije));
+                        Audit.DataBaseReadSuccess(rawname);
+                        if (projekcijaZaIzmenu != null)
                         {
-                            Audit.DataBaseWriteSuccess(rawname);
+                            projekcijaZaIzmenu.VremeProjekcije = novoVremeProjekcije;
+                            projekcijaZaIzmenu.Sala = novaSala;
+                            projekcijaZaIzmenu.CenaKarte = novaCenaKarte;
+
+                            if (dbContext.SaveChanges() > 0)
+                            {
+                                Audit.DataBaseWriteSuccess(rawname);
+                            }
+                            else
+                            {
+                                //ovde ide audit za database write failed
+                                Audit.DataBaseWriteFailed(rawname, "Nije bilo nikakvih izmena");
+                            }
                         }
                         else
                         {
-                            //ovde ide audit za database write failed
+                            Console.WriteLine("Nema projekcije sa tim imenom");
                         }
                     }
-                    else
+                    catch(Exception ex)
                     {
-                        Console.WriteLine("Nema projekcije sa tim imenom");
+                        Audit.DataBaseReadFailed(rawname, ex.Message);
                     }
                 }
                 
@@ -163,7 +180,7 @@ namespace Server
             }
         }
         //[PrincipalPermission(SecurityAction.Demand, Role = "Korisnik")]
-        public int NapraviRezervaciju(string imeProjekcije, int brojKarata)
+        public int NapraviRezervaciju(int idProjekcije, int brojKarata)
         {
             X509Certificate2 clcert = clientCert();
             string rawname = clcert.SubjectName.Name;
@@ -178,36 +195,45 @@ namespace Server
 
                 using (var dbContext = new MyDbContext())
                 {
-                    var p = dbContext.projekcijas.FirstOrDefault(pr => pr.Naziv.Equals(imeProjekcije));   
-                    if (p.Naziv.Equals(imeProjekcije))
+                    try
                     {
-                        var r = new Rezervacija
+                        var p = dbContext.projekcijas.FirstOrDefault(pr => pr.ProjekcijaId == idProjekcije);
+                        Audit.DataBaseReadSuccess(rawname);
+                        if (p != null)
                         {
-                            IdProjekcije = p.ProjekcijaId,
-                            VremeRezervacije = DateTime.Now,
-                            KolicinaKarata = brojKarata,
-                            StanjeRezervacije = Status.NEPLACENA,
-                            Kreirao = rawname
-                        };
+                            var r = new Rezervacija
+                            {
+                                IdProjekcije = p.ProjekcijaId,
+                                VremeRezervacije = DateTime.Now,
+                                KolicinaKarata = brojKarata,
+                                StanjeRezervacije = Status.NEPLACENA,
+                                Kreirao = rawname
+                            };
 
-                        dbContext.rezervacijas.Add(r);
-                        //retid = dbContext.rezervacijas.Add(r).RezervacijaId;
-                        if (dbContext.SaveChanges() > 0)
-                        {
-                            Audit.DataBaseWriteSuccess(rawname);
-                           
+                            dbContext.rezervacijas.Add(r);
+                            //retid = dbContext.rezervacijas.Add(r).RezervacijaId;
+                            if (dbContext.SaveChanges() > 0)
+                            {
+                                Audit.DataBaseWriteSuccess(rawname);
+
+                            }
+                            else
+                            {
+                                //ovde ide audit za database write failed
+                                Audit.DataBaseWriteFailed(rawname, "Nije bilo nikakvih izmena");
+                            }
+
+                            retid = r.RezervacijaId;
                         }
                         else
                         {
-                            //ovde ide audit za database write failed
+                            Console.WriteLine("Nema projekcije pod tim nazivom");
+                            return -1;
                         }
-
-                        retid = r.RezervacijaId;
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Console.WriteLine("Nema projekcije pod tim nazivom");
-                        return -1;
+                        Audit.DataBaseReadFailed(rawname, ex.Message);
                     }
                         
                     
@@ -250,42 +276,51 @@ namespace Server
                 //Console.WriteLine("Korisnik je platio rezervaciju");
                 using (var dbContext = new MyDbContext())
                 {
-                    var rezervacija = dbContext.rezervacijas.FirstOrDefault(r => r.RezervacijaId == idRezervacije && r.StanjeRezervacije == Status.NEPLACENA);
-                    if (rezervacija != null)
+                    try
                     {
-                        var korisnik = dbContext.korisniks.FirstOrDefault(k => k.ImeKorisnika == rawname);
-                        var projekcija = dbContext.projekcijas.FirstOrDefault(p => p.ProjekcijaId == rezervacija.IdProjekcije);
-                        
-
-                        if (rawname.Contains("vip"))
+                        var rezervacija = dbContext.rezervacijas.FirstOrDefault(r => r.RezervacijaId == idRezervacije && r.StanjeRezervacije == Status.NEPLACENA);
+                        if (rezervacija != null)
                         {
-                            var popust = dbContext.popusts.SingleOrDefault();
-                            ukupnaCena = (projekcija.CenaKarte * rezervacija.KolicinaKarata) - (projekcija.CenaKarte * rezervacija.KolicinaKarata) * (popust.Procenat / 100);
-                            
+                            var korisnik = dbContext.korisniks.FirstOrDefault(k => k.ImeKorisnika == rawname);
+                            var projekcija = dbContext.projekcijas.FirstOrDefault(p => p.ProjekcijaId == rezervacija.IdProjekcije);
+
+
+                            if (rawname.Contains("vip"))
+                            {
+                                var popust = dbContext.popusts.SingleOrDefault();
+                                ukupnaCena = (projekcija.CenaKarte * rezervacija.KolicinaKarata) * (1 - (double)popust.Procenat / 100);
+                                //Console.WriteLine(popust.Procenat.ToString());
+                            }
+                            else
+                            { 
+                                ukupnaCena = (projekcija.CenaKarte * rezervacija.KolicinaKarata);
+                                //Console.WriteLine(ukupnaCena.ToString());
+                            }
+
+                            if (korisnik.StanjeNaRacunu >= ukupnaCena)
+                            {
+                                korisnik.StanjeNaRacunu -= Convert.ToInt32(ukupnaCena);
+                                rezervacija.StanjeRezervacije = Status.PLACENA;
+
+                                if (dbContext.SaveChanges() > 0)
+                                {
+                                    Audit.DataBaseWriteSuccess(rawname);
+                                }
+                                else
+                                {
+                                    //ovde ide audit za database write failed
+                                    Audit.DataBaseWriteFailed(rawname, "Nije bilo nikakvih izmena");
+                                }
+                            }
                         }
                         else
                         {
-                            ukupnaCena = projekcija.CenaKarte * rezervacija.KolicinaKarata;
-                        }
-
-                        if (korisnik.StanjeNaRacunu >= ukupnaCena)
-                        {
-                            korisnik.StanjeNaRacunu -= Convert.ToInt32(ukupnaCena);
-                            rezervacija.StanjeRezervacije = Status.PLACENA;
-
-                            if (dbContext.SaveChanges() > 0)
-                            {
-                                Audit.DataBaseWriteSuccess(rawname);
-                            }
-                            else
-                            {
-                                //ovde ide audit za database write failed
-                            }
+                            Console.WriteLine("Ne postoji rezervacija sa tim id-em");
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Console.WriteLine("Ne postoji rezervacija sa tim id-em");
+                        Audit.DataBaseReadFailed(rawname, ex.Message);
                     }
                 }
                 return cena = Convert.ToInt32(ukupnaCena);
@@ -312,36 +347,44 @@ namespace Server
             using (var dbContext = new MyDbContext()) // Zamijenite MyDbContext sa stvarnim imenom vašeg DbContext-a
             {
                 // Provera da li korisnik postoji u bazi
-                var korisnik = dbContext.korisniks.FirstOrDefault(k => k.ImeKorisnika == rawname);
-
-                if (korisnik == null)
+                try
                 {
-                    // Kreiranje novog korisnika ako ne postoji
-                    var noviKorisnik = new Korisnik
-                    {
-                        ImeKorisnika = rawname,
-                        StanjeNaRacunu = random.Next(3000, 15001) // Postavite željeno stanje na računu
-                                           // Dodajte ostale propertije prema vašim potrebama
-                    };
+                    var korisnik = dbContext.korisniks.FirstOrDefault(k => k.ImeKorisnika == rawname);
 
-                    // Dodajte novog korisnika u DbSet (tabelu) u DbContext-u
-                    dbContext.korisniks.Add(noviKorisnik);
-
-                    // Sačuvajte promene u bazi podataka
-                    if (dbContext.SaveChanges() > 0)
+                    if (korisnik == null)
                     {
-                        Audit.DataBaseWriteSuccess(rawname);
+                        // Kreiranje novog korisnika ako ne postoji
+                        var noviKorisnik = new Korisnik
+                        {
+                            ImeKorisnika = rawname,
+                            StanjeNaRacunu = random.Next(3000, 15001) // Postavite željeno stanje na računu
+                                                                      // Dodajte ostale propertije prema vašim potrebama
+                        };
+
+                        // Dodajte novog korisnika u DbSet (tabelu) u DbContext-u
+                        dbContext.korisniks.Add(noviKorisnik);
+
+                        // Sačuvajte promene u bazi podataka
+                        if (dbContext.SaveChanges() > 0)
+                        {
+                            Audit.DataBaseWriteSuccess(rawname);
+                        }
+                        else
+                        {
+                            //ovde ide audit za database write failed
+                            Audit.DataBaseWriteFailed(rawname, "Nije bilo nikakvih izmena");
+                        }
+
+                        Console.WriteLine("Novi korisnik je uspešno kreiran.");
                     }
                     else
                     {
-                        //ovde ide audit za database write failed
+                        Console.WriteLine("Korisnik već postoji u bazi.");
                     }
-
-                    Console.WriteLine("Novi korisnik je uspešno kreiran.");
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Korisnik već postoji u bazi.");
+                    Audit.DataBaseReadFailed(rawname, ex.Message);
                 }
             }
             

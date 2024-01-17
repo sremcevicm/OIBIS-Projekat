@@ -76,12 +76,12 @@ namespace Client
             }
         }
 
-        public int NapraviRezervaciju(string imeProjekcije, int brojKarata)
+        public int NapraviRezervaciju(int idProjekcije, int brojKarata)
         {
             try
             {
-                int broj = factory.NapraviRezervaciju(imeProjekcije, brojKarata);
-                Console.WriteLine("Kreiranje rezervacije je odobreno. Broj Vase rezervacije je: " + broj.ToString());
+                int broj = factory.NapraviRezervaciju(idProjekcije, brojKarata);
+                Console.WriteLine("Kreiranje rezervacije je odobreno. ID Vase rezervacije je: " + broj.ToString());
                 return broj;
             }
             catch (Exception e)
@@ -96,7 +96,7 @@ namespace Client
             try
             {
                 int broj = factory.PlatiRezervaciju(idRezervacije);
-                Console.WriteLine("Placanje rezervacije je odobreno. Platili ste ukupno " + broj.ToString());
+                Console.WriteLine("Placanje rezervacije je odobreno. Platili ste ukupno " + broj.ToString() + "rsd");
                 return broj;
             }
             catch (Exception e)

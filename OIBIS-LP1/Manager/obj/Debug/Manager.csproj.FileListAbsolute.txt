@@ -1,8 +1,8 @@
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Manager\bin\Debug\Manager.dll
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Manager\bin\Debug\Manager.pdb
-C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Manager\obj\Debug\Manager.csproj.AssemblyReference.cache
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Manager\obj\Debug\Manager.AuditEventFile.resources
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Manager\obj\Debug\Manager.csproj.GenerateResource.cache
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Manager\obj\Debug\Manager.csproj.CoreCompileInputs.cache
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Manager\obj\Debug\Manager.dll
 C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Manager\obj\Debug\Manager.pdb
+C:\Users\Milan Sremčević\Desktop\OIBIS\Projekat\OIBIS-Projekat\OIBIS-LP1\Manager\obj\Debug\Manager.csproj.AssemblyReference.cache

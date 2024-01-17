@@ -75,12 +75,30 @@ namespace Manager
             }
 
         }
+		
+		public static string DataBaseWriteFailed
+		{
+			get
+			{
+				return ResourceMgr.GetString(AuditEventTypes.DataBaseWriteFailed.ToString());
+			}
+
+		}
 
 		public static string DataBaseReadSuccess
 		{
 			get
 			{
 				return ResourceMgr.GetString(AuditEventTypes.DataBaseReadSuccess.ToString());
+			}
+
+		}
+
+		public static string DataBaseReadFailed
+		{
+			get
+			{
+				return ResourceMgr.GetString(AuditEventTypes.DataBaseReadFailed.ToString());
 			}
 
 		}

@@ -88,7 +88,7 @@ namespace Manager {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Table {0} was not successfully read from the database..
+        ///   Looks up a localized string similar to User {0} failed to read from database. Error {1}.
         /// </summary>
         internal static string DataBaseReadFailed {
             get {
@@ -97,7 +97,7 @@ namespace Manager {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Teble {0} has been successfully read from database..
+        ///   Looks up a localized string similar to User {0} has successfully read from database..
         /// </summary>
         internal static string DataBaseReadSuccess {
             get {
@@ -106,7 +106,7 @@ namespace Manager {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User {0} failed to insert into the database..
+        ///   Looks up a localized string similar to User {0} failed to insert into the database. Error: {1}.
         /// </summary>
         internal static string DataBaseWriteFailed {
             get {
